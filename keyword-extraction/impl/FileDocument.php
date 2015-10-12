@@ -1,6 +1,13 @@
 <?php
-include (dirname(__FILE__) . "/Document.php");
+include (dirname(__FILE__) . "../api/Document.php");
 
+/**
+ * Very simple and specific file version of a document.
+ *
+ * Convert encoding from UTF-8 to Cp1252
+ *
+ * @author Moisés Rosa
+ */
 class FileDocument implements Document
 {
 
@@ -16,12 +23,6 @@ class FileDocument implements Document
         return $this->filename;
     }
 
-    /**
-     * Very simple and specific version.
-     * Convert encoding from UTF-8 to Cp1252
-     *
-     * @return the content of the document
-     */
     public function getContent()
     {
         $text = file_get_contents($file);

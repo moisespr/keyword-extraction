@@ -1,6 +1,14 @@
 <?php
-include (dirname(__FILE__) . "/CorpusSource.php");
+include (dirname(__FILE__) . "../api/CorpusSource.php");
 
+/**
+ * A corpus source that reads documents from files in a directory.
+ *
+ * The Documents are instances of FileDocument.
+ *
+ * @author Moisés Rosa
+ *        
+ */
 class FileDirectoryCorpusSource implements CorpusSource
 {
 

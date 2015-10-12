@@ -1,7 +1,7 @@
 <?php
 
 /**
- * A Document is a way to get a document content.
+ * An interface that represents a Document.
  * 
  * @author Moisés Rosa
  */
