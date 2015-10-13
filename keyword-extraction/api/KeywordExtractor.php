@@ -20,14 +20,14 @@ interface KeywordExtractor
     public function feed($corpus_source);
 
     /**
-     * Get a list of keywords that appears in the corpus with a frequency larger than $threshold.
+     * Get a list of keywords that appears in the corpus with a frequency larger than or equal $threshold.
      *
      * @param number $threshold
      *            Threshold to the frequency a keyword appears in the corpus
      * @param number $limit
      *            How many keywords are needed, 0 is the default value and means all keywords
      */
-    public function getCommonKeywords($threshold, $limit = 0);
+    public function getCommonKeywords($threshold);
 
     /**
      * Get the keywords in a given document sorted by frequency

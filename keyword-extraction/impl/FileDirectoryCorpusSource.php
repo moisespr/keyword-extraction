@@ -1,6 +1,4 @@
 <?php
-include (dirname(__FILE__) . "../api/CorpusSource.php");
-
 /**
  * A corpus source that reads documents from files in a directory.
  *
@@ -27,7 +25,7 @@ class FileDirectoryCorpusSource implements CorpusSource
         ));
         $corpus = array();
         foreach ($scanned_directory as $file)
-            $corpus[] = new FileDocument($file);
+            $corpus[] = new FileDocument($this->directory."/".$file);
         return $corpus;
     }
 }

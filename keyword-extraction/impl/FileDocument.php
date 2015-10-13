@@ -1,10 +1,8 @@
 <?php
-include (dirname(__FILE__) . "../api/Document.php");
-
 /**
  * Very simple and specific file version of a document.
  *
- * Convert encoding from UTF-8 to Cp1252
+ * Convert encoding from UTF-8 to Cp1252.
  *
  * @author Moisés Rosa
  */
@@ -20,12 +18,12 @@ class FileDocument implements Document
 
     public function getName()
     {
-        return $this->filename;
+        return basename($this->filename);
     }
 
     public function getContent()
     {
-        $text = file_get_contents($file);
+        $text = file_get_contents($this->filename);
         return mb_convert_encoding($text, "Cp1252", "UTF-8");
     }
 }
