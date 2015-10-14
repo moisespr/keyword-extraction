@@ -17,32 +17,32 @@ class TFIDFKeywordExtractorTest extends PHPUnit_Framework_TestCase
      */
     public function testExtractor($corpus_source)
     {
-        $extractor = new TFIDFKeywordExtractor();
-        $extractor->feed($corpus_source);
-        $keywords = $extractor->getDocumentKeywords("post1.txt");
+        $extractor = new KeywordExtractor(new TFIDF(), $corpus_source);
+        $extraction_result = $extractor->extract();
+        $keywords = $extraction_result->getKeywords("post1.txt");
         
         $this->assertCount(365, $keywords);
-        $keywords = $extractor->getDocumentKeywords("post1.txt", 5);
+        $keywords = $extraction_result->getKeywords("post1.txt", 5);
         $this->assertArrayHasKey('PC', $keywords);
         $this->assertArrayHasKey('CPU', $keywords);
         $this->assertArrayHasKey('Part', $keywords);
         $this->assertArrayHasKey('Building', $keywords);
         $this->assertArrayHasKey('SSD', $keywords);
         
-        $keywords = $extractor->getDocumentKeywords("post2.txt");
+        $keywords = $extraction_result->getKeywords("post2.txt");
         
         $this->assertCount(592, $keywords);
-        $keywords = $extractor->getDocumentKeywords("post2.txt", 5);
+        $keywords = $extraction_result->getKeywords("post2.txt", 5);
         $this->assertArrayHasKey('monitor', $keywords);
         $this->assertArrayHasKey('4K', $keywords);
         $this->assertArrayHasKey('monitors', $keywords);
         $this->assertArrayHasKey('It', $keywords);
         $this->assertArrayHasKey('DisplayPort', $keywords);
         
-        $keywords = $extractor->getDocumentKeywords("post3.txt");
+        $keywords = $extraction_result->getKeywords("post3.txt");
         
         $this->assertCount(718, $keywords);
-        $keywords = $extractor->getDocumentKeywords("post3.txt", 5);
+        $keywords = $extraction_result->getKeywords("post3.txt", 5);
         $this->assertArrayHasKey('router', $keywords);
         $this->assertArrayHasKey('HTTPS', $keywords);
         $this->assertArrayHasKey('could', $keywords);

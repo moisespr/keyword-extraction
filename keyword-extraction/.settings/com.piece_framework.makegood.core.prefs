@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+phpunit_config_file=
+preload_script=/keyword-extraction/tests/test_configuration.php
+test_file_pattern=
+test_folders=/keyword-extraction/tests
+testing_framework=PHPUnit

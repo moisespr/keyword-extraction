@@ -9,13 +9,17 @@
  * @author Moisés Rosa
  *        
  */
-class TFIDFKeywordExtractor implements KeywordExtractor
+class TFIDF implements KeywordExtractionAlgorithm
 {
-
-    private $keywords = array();
-
-    public function feed($corpus_source)
+    
+    /**
+     * The result of this extraction will be a ArrayKeywordExtractionResult
+     * 
+     * @see KeywordExtractionAlgorithm::extract()
+     */
+    public function extract($corpus_source, $stopwords_source = NULL)
     {
+        $keywords = array();
         // stores extracted terms from the corpus by document
         $corpus_terms = array();
         // stores the calculated tf (term frequency) for each document
@@ -37,7 +41,9 @@ class TFIDFKeywordExtractor implements KeywordExtractor
         
         // for each document lets calculate the tf-idf and store the keywords by document name
         for ($i = 0; $i < $tfs_count; $i ++)
-            $this->keywords[$corpus[$i]->getName()] = $this->tfidf($corpus_terms[$i], $tfs[$i], $idf);
+            $keywords[$corpus[$i]->getName()] = $this->calcTfidf($corpus_terms[$i], $tfs[$i], $idf);
+        
+        return new ArrayKeywordExtractionResult($corpus_source, $keywords);
     }
 
     /**
@@ -107,7 +113,7 @@ class TFIDFKeywordExtractor implements KeywordExtractor
      *            All terms of the corpus with its calculated idf.
      * @return string[]number All terms of the corpus with its calculated tf-idf sorted by the score.
      */
-    private function tfidf($terms, $tf, $idf)
+    private function calcTfidf($terms, $tf, $idf)
     {
         $tfidf = array();
         foreach ($terms as $term)
@@ -115,35 +121,5 @@ class TFIDFKeywordExtractor implements KeywordExtractor
         arsort($tfidf);
         return $tfidf;
     }
-
-    /**
-     * @see KeywordExtractor::getCommonKeywords()
-     */
-    public function getCommonKeywords($threshold)
-    {
-        // gather all keywords in the corpus
-        $all_keywords = array();
-        foreach ($this->keywords as $keywords)
-            $all_keywords = array_merge($all_keywords, array_keys($keywords));
-            
-            // count how many times a keywords appears in the corpus
-        $all_keywords = array_count_values($all_keywords);
-        arsort($all_keywords);
-        
-        $common_keywords = array();
-        foreach ($all_keywords as $keyword => $frequency)
-            if ($frequency >= $threshold)
-                $common_keywords[] = $keyword;
-        
-        return $common_keywords;
-    }
-
-    /**
-     * @see KeywordExtractor::getDocumentKeywords()
-     */
-    public function getDocumentKeywords($document_name, $limit = 0)
-    {
-        return $limit == 0 ? $this->keywords[$document_name] : array_slice($this->keywords[$document_name], 0, $limit);
-        
-    }
+    
 }

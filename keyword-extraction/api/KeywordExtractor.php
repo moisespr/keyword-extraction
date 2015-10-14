@@ -1,41 +1,60 @@
 <?php
 
 /**
- * An interface to keyword extractors.
+ * An utility class to perform keyword extraction.
  * 
  * @author Moisés Rosa
  *
  */
-interface KeywordExtractor
+class KeywordExtractor
 {
 
     /**
-     * Feed the extractor with a corpus of texts.
+     * Which algorithm will be used to extract the keywords
      *
-     * Implementations should do the keyword computation at this point.
+     * @var KeywordExtractionAlgorithm
+     */
+    private $algorithm;
+
+    /**
+     * The corpus to be analized
      *
+     * @var CorpusSource
+     */
+    private $corpus_source;
+
+    /**
+     * A stopwords source to be used by the keyword extractor
+     *
+     * @var StopwordsSource
+     */
+    private $stopwords_source;
+
+    /**
+     * Constructs the keyword extractor.
+     *
+     * @param KeywordExtractionAlgorithm $algorithm
+     *            Which algorithm will be used to extract the keywords
      * @param CorpusSource $corpus_source
      *            The corpus to be analized
+     * @param StopwordsSource $stopwords_source
+     *            A stopwords source to be used by the keyword extractor
      */
-    public function feed($corpus_source);
+    public function __construct($algorithm, $corpus_source, $stopwords_source = NULL)
+    {
+        $this->algorithm = $algorithm;
+        $this->corpus_source = $corpus_source;
+        $this->stopwords_source = $stopwords_source;
+    }
 
     /**
-     * Get a list of keywords that appears in the corpus with a frequency larger than or equal $threshold.
-     *
-     * @param number $threshold
-     *            Threshold to the frequency a keyword appears in the corpus
-     * @param number $limit
-     *            How many keywords are needed, 0 is the default value and means all keywords
+     * Performs the extraction operation and returns its results.
+     * 
+     * @return KeywordExtractionResult The result of the extraction
      */
-    public function getCommonKeywords($threshold);
-
-    /**
-     * Get the keywords in a given document sorted by frequency
-     *
-     * @param string $document_name
-     *            Document that contains the keywords
-     * @param number $limit
-     *            How many keywords are needed, 0 is the default value and means all keywords
-     */
-    public function getDocumentKeywords($document_name, $limit = 0);
+    public function extract()
+    {
+        return $this->algorithm->extract($this->corpus_source, $this->stopwords_source);
+    }
+    
 }
