@@ -332,6 +332,6 @@ class XPO6EnglishStopwords implements StopwordsSource
 
     public function getStopwords()
     {
-        return XPO6Stopwords::stopwords;
+        return XPO6EnglishStopwords::$stopwords;
     }
 }

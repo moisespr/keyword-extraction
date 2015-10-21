@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Keyword extractor implementing the tf-idf (term frequency-inverse document frequency) method.
  *
@@ -11,10 +12,10 @@
  */
 class TFIDF implements KeywordExtractionAlgorithm
 {
-    
+
     /**
-     * The result of this extraction will be a ArrayKeywordExtractionResult
-     * 
+     * The result of this extraction will be an ArrayKeywordExtractionResult
+     *
      * @see KeywordExtractionAlgorithm::extract()
      */
     public function extract($corpus_source, $stopwords_source = NULL)
@@ -27,7 +28,10 @@ class TFIDF implements KeywordExtractionAlgorithm
         $corpus = $corpus_source->getCorpus();
         foreach ($corpus as $document) {
             $terms = $this->extractTerms($document);
-            // do the counting
+            // remove all stopwords if a source is provided
+            if ($stopwords_source != NULL)
+                $terms = $this->removeStopwords($terms, $stopwords_source->getStopwords());
+                // do the counting
             $tf = array_count_values($terms);
             $corpus_terms[] = $terms;
             $tfs[] = $tf;
@@ -44,6 +48,14 @@ class TFIDF implements KeywordExtractionAlgorithm
             $keywords[$corpus[$i]->getName()] = $this->calcTfidf($corpus_terms[$i], $tfs[$i], $idf);
         
         return new ArrayKeywordExtractionResult($corpus_source, $keywords);
+    }
+
+    private function removeStopwords($terms, $stopwords)
+    {
+        return array_filter(array_map(function ($term) use($stopwords)
+        {
+            return in_array(strtolower($term), $stopwords) ? "" : $term;
+        }, $terms));
     }
 
     /**
@@ -121,5 +133,4 @@ class TFIDF implements KeywordExtractionAlgorithm
         arsort($tfidf);
         return $tfidf;
     }
-    
 }

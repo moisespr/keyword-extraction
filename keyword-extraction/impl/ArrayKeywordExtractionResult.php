@@ -1,4 +1,10 @@
 <?php
+/**
+ * An implementation of KeywordExtractionResult that stores the results in an associative array.
+ * 
+ * @author Moisés Rosa
+ *
+ */
 class ArrayKeywordExtractionResult implements KeywordExtractionResult {
     
     private $keywords = array();
