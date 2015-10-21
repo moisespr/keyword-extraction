@@ -50,8 +50,19 @@ class TFIDF implements KeywordExtractionAlgorithm
         return new ArrayKeywordExtractionResult($corpus_source, $keywords);
     }
 
+    /**
+     * Removes all stop words from the list of terms.
+     *
+     * @param string[] $terms
+     *            all terms
+     * @param string[] $stopwords
+     *            list of stop words
+     * @return string[] list of terms without the stop words
+     */
     private function removeStopwords($terms, $stopwords)
     {
+        // there is too much overhead to make it case insensitive, there must be a better way of doing this
+        $stopwords = array_map('strtolower', $stopwords);
         return array_filter(array_map(function ($term) use($stopwords)
         {
             return in_array(strtolower($term), $stopwords) ? "" : $term;
